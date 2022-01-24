@@ -2,14 +2,11 @@ import {Fragment, useState, useEffect, Component} from 'react';
 
 import Users from './Users';
 import classes from './UserFinder.module.css';
-
-const DUMMY_USERS = [
-    {id: 'u1', name: 'Max'},
-    {id: 'u2', name: 'Manuel'},
-    {id: 'u3', name: 'Julie'},
-];
+import UserContext from "../store/user-context";
 
 class UserFinder extends Component {
+    static contextType = UserContext;
+
     constructor() {
         super();
         this.state = {
@@ -20,12 +17,12 @@ class UserFinder extends Component {
 
     componentDidMount() {
         // Only runs ones
-        this.setState({filteredUsers: DUMMY_USERS});
+        this.setState({filteredUsers: this.context.users});
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevState.searchTerm !== this.state.searchTerm) {
-            this.setState({filteredUsers: DUMMY_USERS.filter((user) => user.name.includes(this.state.searchTerm))});
+            this.setState({filteredUsers: this.context.users.filter((user) => user.name.includes(this.state.searchTerm))});
         }
     };
 
